@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+*{
+    font-family: "Rubik", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+}
+header, footer{
+    background-color: #003C43;
+}
+footer h5,
+.nav-link {
+  color: #ffff !important;
+  font-weight: 700 !important;
+}
+.main{
+    background-color: #E3FEF7 !important;
+}

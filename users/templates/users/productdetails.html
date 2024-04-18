@@ -1,0 +1,86 @@
+<style>
+ .card-img{
+        overflow: hidden;
+    }
+
+    .card-img:hover img{
+        transform: scale(1.5);
+    }
+    .card-img img{
+        transition: all 2s;
+        height: 250px;
+
+    }
+    .card-body{
+        background: linear-gradient(to top right, rgba(66, 77, 173, 0.5), rgba(170, 156, 46, 0.5));
+        text-align: center;
+        text-transform: capitalize;
+    }
+    .cardstart > h1 > span{
+        background: -webkit-linear-gradient(#7b1134,  #5b5199, #99331c);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .box{
+        background: linear-gradient(to top right, rgba(222, 58, 99, 0.5), rgba(82, 243, 176, 0.5));
+       
+    }
+    .box h2,h3,p{
+        color: #003C43 !important;
+    }
+    .bodybtn{
+        background-color: #003C43 !important;
+    }
+</style>
+
+{% extends 'layout.html '%}
+{% load static %}
+{% block title %}
+<title>E-commerce - Product Detail</title>
+{% endblock %}
+
+{% block main_content %}
+
+<!-- card start -->
+<div class="container py-3 ">
+    <h1 class="text-center mb-3"  style="color: #04211f !important; background-color: rgb(252, 209, 252);  padding: 5px 20px; border-radius: 20px;"> <span style="color: rgb(126, 39, 137); ">Product</span> Detail</h1>
+    <div class="d-flex mt-3">
+        <div class="col-md-4 shadow-lg">
+            <img src="/{{products.image}}" alt="{{products.product_name}}" style="width: 100%; height: 100%;"> 
+        </div>
+        <div class="offset-md-2 col-md-6 shadow-lg pt-2 px-3 box">
+            <h2 class="text-muted text-center">{{products.product_name}}</h2>
+            <h3 class="text-center">Rs. {{products.product_price}}</h3>
+            <h3 class="text-center">Available Quantity: {{products.stock}}</h3>
+            <p class="text-center"><b>Category; {{products.category}}</b></p>
+            <p class="text-muted text-center">
+                {{products.description}}
+            </p>
+            <center><a href="/products/add_to_cart/{{products.id}}" class="btn btn-success bodybtn">Add To Cart</a></center>
+        </div>
+    </div>
+</div>
+<div class="container-fluid cardstart" style="background-color: #77B0AA!important;">
+    <h1 class="text-center pt-3"  style="color: #04211f !important;"> <span>Flash</span> Sales</h1>
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for products in product %}
+        <div class="col py-3">
+            <div class="card shadow-lg">
+                <div class="card-img">
+                     <img src="/{{products.image}}"
+                        class="card-img-top" alt="{{products.product_name}}">
+                </div>
+                
+
+                <div class="card-body">
+                    <h5 class="card-title">{{products.product_name}}</h5>
+                    <h5 class="card-title">Rs. {{products.product_price}}</h5>
+                    <a href="/productdetails/{{products.id}}" class="btn btn-success bodybtn">View Details</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<!-- card end -->
+{% endblock %}

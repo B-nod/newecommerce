@@ -1,0 +1,107 @@
+<style>
+    .carousel-item img {
+        height: 600px;
+    }
+
+    /* .card img{
+        height: 250px;
+    } */
+    .card-img {
+        overflow: hidden;
+    }
+
+    .card-img:hover img {
+        transform: scale(1.5);
+    }
+
+    .card-img img {
+        transition: all 2s;
+        height: 250px;
+    }
+
+    .card-body {
+        background: linear-gradient(to top right, rgba(66, 77, 173, 0.5), rgba(170, 156, 46, 0.5));
+        text-align: center;
+        text-transform: capitalize;
+    }
+
+    .form label {
+        display: none;
+    }
+    .one{
+        color: #04211f !important;  
+        background-color: rgb(252, 209, 252); 
+        font-weight: 500; font-size: 35px; 
+         padding: 5px 20px; 
+         position: relative; 
+         left: 140px; 
+         bottom: 20px; 
+         border-radius: 50px;
+    }
+</style>
+
+{% extends 'layout.html '%}
+{% load static %}
+{% block title %}
+<title>E-commerce - Cart</title>
+{% endblock %}
+
+{% block main_content %}
+
+<!-- card start -->
+
+<div class="container-fluid py-5">
+    <span  class="one"> <span style="color: rgb(126, 39, 137); ">My Cart</span> Items </span>
+    <div class="d-flex justify-content-center">
+        <div class="col-md-10">
+            {% for msg in messages %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS%}
+            <div class="alert alert-success">
+                {{ msg }}
+            </div>
+            {% endif %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR%}
+            <div class="alert alert-danger">
+                {{ msg }}
+            </div>
+            {% endif %}
+            {% endfor%}
+
+            <table class="table table-bordered table-striped table-light">
+                <thead>
+                    <tr>
+                        <th>Product Name</th>
+                        <th>Product Price</th>
+                        <th>Product Image</th>
+                        <th>Date Added</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in items %}
+                    <tr>
+                        <td>
+                            {{ i.product.product_name }}</td>
+                        <td>{{ i.product.product_price }}</td>
+
+                        <td>
+                            <img src="/{{ i.product.image }}" alt="image content" width="200px">
+                        </td>
+                        <td>{{ i.created_data }}</td>
+                        <td>
+                            <a href="{% url 'removecart' i.id %}" class="btn btn-danger"
+                                onclick="return confirm('Are You Sure Want to Delete This Cart Item ?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+</div>
+<!-- card end -->
+{% endblock %}

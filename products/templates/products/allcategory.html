@@ -1,0 +1,49 @@
+{% extends 'admins/layout.html' %}
+{% block main_content %}
+
+
+<h2 class="text-center text-success">All Categories </h2>
+
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="col-md-8">
+            {% for msg in messages %}
+            {% if msg.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+            <div class="alert alert-success">
+                {{ msg }}
+            </div>
+            {% endif %}
+            {% endfor %}
+            <table class="table table-bordered table-striped table-light">
+                <thead>
+                    <tr>
+                        <th>Category Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for category_show in categories%}
+                    <tr>
+                        <td>
+                            {{ category_show.category_name }}
+                        </td>
+                        <td>
+                            <a href="/products/updatecategory/{{category_show.id}}" class="btn btn-primary">
+                                <i class="fas fa-pen-square"></i>
+                            </a>
+                            &nbsp;&nbsp;
+                            <a href="/products/deletecategory/{{category_show.id}}" class="btn btn-danger" onclick="return confirm('Are You Sure Want to Delete This Category ?')">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+                        </td>
+                        
+                    </tr>
+                    
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
