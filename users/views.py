@@ -56,28 +56,58 @@ def logout_user(request):
 
 def homepage(request):
     products = Product.objects.all().order_by('-id')[:8]
-    context = {
-        'products': products
-    }
-    return render(request, 'users/index.html', context)
-
+    user = request.user
+    if user:
+        items = Cart.objects.filter(user=user)
+        context = {
+            'products': products,
+            'items':items
+        }
+        return render(request, 'users/index.html', context)
+    else:
+        context = {
+            'products': products,
+         
+        }
+        return render(request, 'users/index.html', context)
+    
 def productspage(request):
     products = Product.objects.all().order_by('-id')
     product_filter = ProductFilter(request.GET, queryset=products)
     product_final = product_filter.qs
-    context = {
+    user = request.user
+    if user:
+        items = Cart.objects.filter(user=user)
+        context = {
         'products': product_final,
-        'product_filter': product_filter
-    }
-    return render(request, 'users/products.html', context)
+        'product_filter': product_filter,
+        'items':items
+        }
+        return render(request,'users/products.html', context)
+    else: 
+        context = {
+            'products': product_final,
+            'product_filter': product_filter
+        }
+        return render(request, 'users/products.html', context)
 
 def product_detail(request, product_id):
     products = Product.objects.get(id=product_id)
     product = Product.objects.all().order_by('-id')[:4]
-    context = {
+    user = request.user
+    if user:
+        items = Cart.objects.filter(user=user)
+        context = {
         'products':products,
-        'product':product
-    }
-    return render(request, 'users/productdetails.html', context)
+        'product':product,
+         'items':items
+        }
+        return render(request, 'users/productdetails.html', context)
+    else:
+        context = {
+            'products':products,
+            'product':product
+        }
+        return render(request, 'users/productdetails.html', context)
             
 

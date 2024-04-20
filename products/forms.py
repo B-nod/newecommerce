@@ -14,4 +14,9 @@ class CategoryForm(ModelForm):
 class OrderForm(ModelForm):
     class Meta:
         model = Order
-        fields = '__all__'
+        fields = ['quantity','payment_method', 'contact_no','address']
+
+class EditOrderForm(ModelForm):
+    class Meta:
+        model = Order
+        fields = ['status', 'payment_status']

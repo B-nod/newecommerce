@@ -30,12 +30,16 @@ class Cart(models.Model):
 class Order(models.Model):
     PAYMENT=(
         ('Cash on delivery','Cash on delivery'),
+        ('Esewa', 'Esewa')
+        
     )
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE,default=1)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, default=2)
     quantity = models.IntegerField()
+    total_price= models.IntegerField(null=True)
     status = models.CharField(default='Pending', max_length=200)
-    payment_method = models.CharField(max_length=200, choices=PAYMENT)
-    contact_no = models.IntegerField(validators=[MinLengthValidator(9), MaxLengthValidator(10)])
+    payment_method = models.CharField(max_length=200, choices=PAYMENT, default=1)
+    payment_status = models.BooleanField(default=False, null=True, blank=True)
+    contact_no = models.CharField(validators=[MinLengthValidator(9), MaxLengthValidator(10)], max_length=100)
     address = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)

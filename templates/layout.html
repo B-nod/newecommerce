@@ -62,7 +62,7 @@
           <a href="{% url 'mycart' %}" class="btn btn-outline-light text-white fs-4">
             <i class="far fa-cart-plus position-relative">
               <span class="position-absolute top-0 start-100 bg-warning badge rounded-pill translate-middle text-dark">
-                <span style="font-size: 12px;">5</span>
+                <span style="font-size: 12px;">{{ items|length }}</span>
               </span>
             </i>
           </a>
