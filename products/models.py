@@ -39,7 +39,7 @@ class Order(models.Model):
     total_price= models.IntegerField(null=True)
     status = models.CharField(default='Pending', max_length=200)
     payment_method = models.CharField(max_length=200, choices=PAYMENT, default=1)
-    payment_status = models.BooleanField(default=False, null=True, blank=True)
+    payment_status = models.BooleanField(default=False, null=True)
     contact_no = models.CharField(validators=[MinLengthValidator(9), MaxLengthValidator(10)], max_length=100)
     address = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)

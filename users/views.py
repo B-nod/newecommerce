@@ -56,20 +56,20 @@ def logout_user(request):
 
 def homepage(request):
     products = Product.objects.all().order_by('-id')[:8]
-    user = request.user
-    if user:
-        items = Cart.objects.filter(user=user)
-        context = {
-            'products': products,
-            'items':items
-        }
-        return render(request, 'users/index.html', context)
-    else:
-        context = {
+    # user = request.user
+    # if user:
+    #     items = Cart.objects.filter(user=user)
+    #     context = {
+    #         'products': products,
+    #         'items':items
+    #     }
+    #     return render(request, 'users/index.html', context)
+    # else:
+    context = {
             'products': products,
          
-        }
-        return render(request, 'users/index.html', context)
+    }
+    return render(request, 'users/index.html', context)
     
 def productspage(request):
     products = Product.objects.all().order_by('-id')
