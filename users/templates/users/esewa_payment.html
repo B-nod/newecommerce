@@ -8,52 +8,31 @@
 
 {% block main_content %}
 
-<!-- <div class="container">
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <h1 class="text-center">You are being redirect to Esewa. Please wait........</h1>
-            <div class="card py-2" >
-                <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST">
-                    <input type="text" id="amount" name="amount" value="{{data.amount}}" required>
-                    <input type="text" id="tax_amount" name="tax_amount" value ="0" required>
-                    <input type="text" id="total_amount" name="total_amount" value="{{data.total_amount}}" required>
-                    <input type="text" id="transaction_uuid" name="transaction_uuid" value="{{data.transaction_uuid}}" required>
-                    <input type="text" id="product_code" name="product_code" value ="EPAYTEST" required>
-                    <input type="text" id="product_service_charge" name="product_service_charge" value="0" required>
-                    <input type="text" id="product_delivery_charge" name="product_delivery_charge" value="0" required>
-                    <input type="text" id="success_url" name="success_url" value="https://esewa.com.np" required>
-                    <input type="text" id="failure_url" name="failure_url" value="https://google.com" required>
-                    <input type="text" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required>
-                    <input type="text" id="signature" name="signature" value="{{data.signature}}" required>
-                    <input value="Submit" type="submit">
-                    </form>
-            </div>
-        </div>
-    </div>
-</div> -->
+<div class="container my-5">
+    <div class="row d-flex justify-content-center">
+        <div class="col-md-5 shadow">
+                <h2 class="text-center">You are being redirect to Esewa please wait...................</h2>
+                <div class="card" style="display:none" >
+                    <form action="https://rc-epay.esewa.com.np/api/epay/main/v2/form" method="POST" id="esewa_form" >
+                        <input type="text" id="amount" name="amount" value="{{data.amount}}" required>
+                        <input type="text" id="tax_amount" name="tax_amount" value ="0" required>
+                        <input type="text" id="total_amount" name="total_amount" value="{{data.total_amount}}" required>
+                        <input type="text" id="transaction_uuid" name="transaction_uuid" value="{{data.transaction_uuid}}" required>
+                        <input type="text" id="product_code" name="product_code" value ="EPAYTEST" required>
+                        <input type="text" id="product_service_charge" name="product_service_charge" value="0" required>
+                        <input type="text" id="product_delivery_charge" name="product_delivery_charge" value="0" required>
+                        <input type="text" id="success_url" name="success_url" value="http://127.0.0.1:8000/esewaverify/{{order.id}}/{{cart.id}}" required>
+                        <input type="text" id="failure_url" name="failure_url" value="https://google.com" required>
+                        <input type="text" id="signed_field_names" name="signed_field_names" value="total_amount,transaction_uuid,product_code" required>
+                        <input type="text" id="signature" name="signature" value="{{data.signature}}"  required>
+                        <input value="Submit" type="submit">
+                        </form>
 
-
-<div class="container">
-    <div class="row">
-        <div class="col-md-6 offset-md-3">
-            <h1 class="text-center">You are being redirect to Esewa. Please wait........</h1>
-            <div class="card py-2" style="display: none">
-                <form action="https://uat.esewa.com.np/epay/main" method="POST" id="esewa_form">
-                    <input value="{{order.total_price}}" name="tAmt" type="text" readonly>
-                    <input value="{{order.total_price}}" name="amt" type="text" readonly>
-                    <input value="0" name="txAmt" type="text" readonly>
-                    <input value="0" name="psc" type="text" readonly>
-                    <input value="0" name="pdc" type="text" readonly>
-                    <input value="EPAYTEST" name="scd" type="text" readonly>
-                    <input value="{{order.id}}_{{cart.id}}" name="pid" type="text" readonly>
-                    <input value="http://localhost:8000/products/esewa_verify" type="hidden" name="su">
-                    <input value="{{request.build_absolute_uri}}" type="hidden" name="fu">
-                    <input value="Submit" type="submit">
-                    </form>
-            </div>
+                </div>
         </div>
     </div>
 </div>
+
 
 <script>
     setTimeout(function(){
