@@ -201,7 +201,7 @@ def order_item(request, product_id, cart_id):
                 #     'cart': cart_item
                 # }
                 # return render(request,'users/esewa_payment.html',context)
-                return redirect(reverse('esewaform')+"?o_id="+str(order.id)+"&c_id="+str(cart.id))
+                return redirect(reverse('esewaform')+"?o_id="+str(order.id)+"&c_id="+str(cart_item.id))
             else:
                 messages.add_message(request, messages.ERROR, 'Soemthing went wrong')
                 return render(request, 'users/orderform.html', {'forms':form})
@@ -248,7 +248,7 @@ import hashlib #encrypt data
 import uuid  #to generate random string 
 import base64
 class EsewaView(View):
-   def get(self,request,args,*kwargs):
+   def get(self,request,*args,**kwargs):
         o_id=request.GET.get('o_id')
         c_id=request.GET.get('c_id')
         cart=Cart.objects.get(id=c_id)
