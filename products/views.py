@@ -204,7 +204,7 @@ def order_item(request, product_id, cart_id):
                 return redirect(reverse('esewaform')+"?o_id="+str(order.id)+"&c_id="+str(cart_item.id))
             else:
                 messages.add_message(request, messages.ERROR, 'Soemthing went wrong')
-                return render(request, 'users/orderform.html', {'forms':form})
+                return render(request, 'users/orderform.html', {'form':form})
 
     context = {
         'form':OrderForm
@@ -260,6 +260,7 @@ class EsewaView(View):
         def genSha256(key,message):
             key=key.encode('utf-8')
             message=message.encode('utf-8')
+
             hmac_sha256=hmac.new(key,message,hashlib.sha256)
 
             digest=hmac_sha256.digest()
@@ -305,7 +306,10 @@ def esewa_verify(request, order_id, cart_id):
             order.save()
             cart.delete()
             messages.add_message(request, messages.SUCCESS, 'Payment Successful')
-            return redirect('/myorder')
+            return redirect('/my_order')
+        else:
+            messages.add_message(request, messages.ERROR, 'Failed to make a payment')
+            return redirect('/my_order')
 
 
 @login_required
