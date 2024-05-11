@@ -15,3 +15,29 @@ footer h5,
 .main{
     background-color: #E3FEF7 !important;
 }
+.nav-link {
+  position: relative;
+  color: var(--text-colour);
+  padding: 8px 16px;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.nav-link:hover {
+  color: black !important;
+  transition: 0.3s;
+}
+.nav-link.active {
+  font-weight: 700;
+}
+.nav-link.active::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 20px;
+  height: 2px;
+  color: black !important;
+
+}

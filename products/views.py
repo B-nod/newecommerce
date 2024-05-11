@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from . models import *
 from . forms import *
@@ -7,6 +7,7 @@ from django.contrib.auth.decorators import login_required
 from users.auth import admin_only
 from django.urls import reverse
 from django.views import View
+import decimal
 
 
 # Create your views here.
@@ -151,8 +152,78 @@ def add_to_cart(request, product_id):
 def show_cart_item(request):
     user = request.user
     items = Cart.objects.filter(user=user)
+    cp = [p for p in Cart.objects.all() if p.user==user]
+    amount = 0
+    total_amount = 0
+    shipping = 100
+
+    if cp:
+        for p in cp:
+            temp_amount = (p.quantity * p.product.product_price)
+            amount += temp_amount
+
+            total_amount = amount + shipping
+
+
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        user = request.user
+        if form.is_valid():
+            cart = Cart.objects.filter(user=user)
+            address = form.cleaned_data['address']
+            mobile = form.cleaned_data['mobile']
+            pm = form.cleaned_data['payment_method']
+            order_lists = []
+            for c in cart:
+              
+                
+                order = {
+                    'user':c.user.username,
+                    'product':c.product.name,
+                    'address':address,
+                    'mobile':mobile,
+                    'quantity':c.quantity,
+                    'total_amount':float(total_amount),
+                    'payment_method':pm,
+                    'status':'pending',
+               
+                    
+
+                }
+                order_lists.append(order)
+                
+                print("order===",order)
+
+
+
+                corder = Order(user=c.user, product=c.product, address=address,mobile=mobile,quantity= c.quantity, total=total_amount, payment_method=pm)
+                corder.save()
+                if order.payment_method == 'Cash on delivery':
+                
+                    cart.delete()
+                    messages.add_message(request,messages.SUCCESS, 'Order Successful')
+                    return redirect('/products/my_order')
+                
+                elif order.payment_method == 'Esewa':
+                    # context={
+                    #     'order':order,
+                    #     'cart': cart_item
+                    # }
+                    # return render(request,'users/esewa_payment.html',context)
+                    return redirect(reverse('esewaform')+"?o_id="+str(order.id)+"&c_id="+str(cart_item.id))
+                else:
+                    messages.add_message(request, messages.ERROR, 'Soemthing went wrong')
+                    return render(request, 'users/orderform.html', {'form':form})
+
+
+
+
     context = {
-        'items':items
+        'amount':amount,
+        'total_amount':total_amount ,
+        'items':items,
+        'shipping':shipping,
+        'form': OrderForm
     }
     return render(request,'users/mycart.html', context)
 
@@ -162,6 +233,28 @@ def remove_cart_item(request, cart_id):
     item.delete()
     messages.add_message(request, messages.SUCCESS, 'Item removed from the cart')
     return redirect('/products/mycart')
+
+@login_required
+def plus_cart(request, cart_id):
+    if request.method == 'GET':
+        cp = get_object_or_404(Cart, id=cart_id)
+        cp.quantity += 1
+        cp.save()
+    return redirect('/products/mycart')
+
+
+@login_required
+def minus_cart(request, cart_id):
+    if request.method == 'GET':
+        cp = get_object_or_404(Cart, id=cart_id)
+        # Remove the Product if the quantity is already 1
+        if cp.quantity == 1:
+            cp.delete()
+        else:
+            cp.quantity -= 1
+            cp.save()
+    return redirect('/products/mycart')
+
 
 @login_required
 def order_item(request, product_id, cart_id):

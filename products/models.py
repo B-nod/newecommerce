@@ -25,7 +25,15 @@ class Product(models.Model):
 class Cart(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE) 
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
     created_data = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(self.user)
+    
+    @property
+    def total_price(self):
+        return self.quantity * self.product.product_price
 
 class Order(models.Model):
     PAYMENT=(
@@ -36,7 +44,7 @@ class Order(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE,default=1)
     user = models.ForeignKey(User, on_delete=models.CASCADE, default=2)
     quantity = models.IntegerField()
-    total_price= models.IntegerField(null=True)
+    total_price= models.PositiveIntegerField(null=True)
     status = models.CharField(default='Pending', max_length=200)
     payment_method = models.CharField(max_length=200, choices=PAYMENT, default=1)
     payment_status = models.BooleanField(default=False, null=True)

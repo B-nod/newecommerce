@@ -74,7 +74,7 @@
 
 <!-- card start -->
 
-<div class="container-fluid cardstart">
+<div class="container cardstart">
     <h1 class="text-center pt-3"  style="color: #3e7570 !important;"> <span>New</span> Products</h1>
     <div class="row row-cols-1 row-cols-md-4 g-4">
         {% for products in products%}
@@ -87,7 +87,7 @@
                 
 
                 <div class="card-body">
-                    <h5 class="card-title">{{products.product_name}}</h5>
+                    <h5 class="card-title p-3">{{products.product_name}}</h5>
                     <h5 class="card-title">Rs. {{products.product_price}}</h5>
                     <a href="/productdetails/{{products.id}}" class="btn btn-success">View Details</a>
                 </div>
