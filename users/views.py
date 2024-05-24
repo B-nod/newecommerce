@@ -75,7 +75,7 @@ def productspage(request):
     products = Product.objects.all().order_by('-id')
     product_filter = ProductFilter(request.GET, queryset=products)
     product_final = product_filter.qs
-    user = request.user
+    user = request.user.id
     if user:
         items = Cart.objects.filter(user=user)
         context = {

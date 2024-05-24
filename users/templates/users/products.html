@@ -25,6 +25,10 @@
     .form label{
         display: none;
     }
+    .searchform label{
+        display: none;
+    }
+ 
 </style>
 
 {% extends 'layout.html '%}
@@ -69,5 +73,10 @@
         {% endfor %}
     </div>
 </div>
+<script>
+    // setTimeout(function(){
+    //     document.getElementById('search_form').submit()
+    // },1000)
+</script>
 <!-- card end -->
 {% endblock %}
