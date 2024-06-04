@@ -72,6 +72,7 @@ def homepage(request):
         return render(request, 'users/index.html', context)
     
 def productspage(request):
+    category=Category.objects.all()
     products = Product.objects.all().order_by('-id')
     product_filter = ProductFilter(request.GET, queryset=products)
     product_final = product_filter.qs
@@ -81,13 +82,15 @@ def productspage(request):
         context = {
         'products': product_final,
         'product_filter': product_filter,
-        'items':items
+        'items':items,
+        'category':category
         }
         return render(request,'users/products.html', context)
     else: 
         context = {
             'products': product_final,
-            'product_filter': product_filter
+            'product_filter': product_filter,
+            'category':category
         }
         return render(request, 'users/products.html', context)
 
