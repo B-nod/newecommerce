@@ -6,6 +6,8 @@ from django.contrib import messages
 from . forms import LoginForm
 from products.models import *
 from .filters import ProductFilter
+from django.contrib.auth.decorators import login_required
+from . forms import *
 
 def register_user(request):
     if request.method == "POST":
@@ -78,14 +80,24 @@ def productspage(request):
     product_final = product_filter.qs
     user = request.user.id
     if user:
-        items = Cart.objects.filter(user=user)
-        context = {
-        'products': product_final,
-        'product_filter': product_filter,
-        'items':items,
-        'category':category
-        }
-        return render(request,'users/products.html', context)
+        if request.method == "POST":
+            searchcategory=request.POST.get('Category')
+            catsearch=Product.objects.filter(category=searchcategory)
+            items = Cart.objects.filter(user=user)
+            context = {
+                'products': catsearch,
+                'product_filter': product_filter,
+                'items':items,
+                'category':category
+            }
+            return render(request,'users/products.html', context)
+        else: 
+            context = {
+                'products': product_final,
+                'product_filter': product_filter,
+                'category':category
+            }
+            return render(request, 'users/products.html', context)
     else: 
         context = {
             'products': product_final,
@@ -113,4 +125,25 @@ def product_detail(request, product_id):
             }
         return render(request, 'users/productdetails.html', context)
             
+@login_required
+def user_profile(request):
+    customer=Customer.objects.all()
+    if request.method == "POST":
+        form = CustomerForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.add_message(request, messages.SUCCESS, "User profile created successfully!")
+            return render(request,'layout.html',{
+                'customer':customer
+            })
+        else:
+            messages.add_message(request, messages.ERROR, 'Please verify form!')
+            return render(request,'users/user_profile.html',{
+                'form':form
+            })
+    
+    context = {
+        'form':CustomerForm
+    }
 
+    return render(request, 'users/user_profile.html', context)

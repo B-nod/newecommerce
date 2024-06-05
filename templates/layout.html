@@ -60,7 +60,6 @@
         <div class="text-end">
 
           {% if user.is_authenticated %}
-          <a href="{% url 'logout' %}" class="btn btn-danger">Logout</a>
           <a href="{% url 'mycart' %}" class="btn btn-outline-light text-white fs-4">
             <i class="far fa-cart-plus position-relative">
               <span class="position-absolute top-0 start-100 bg-warning badge rounded-pill translate-middle text-dark">
@@ -68,16 +67,61 @@
               </span>
             </i>
           </a>
+      
+
           {% else %}
           <a href="{% url 'login' %}" class="btn btn-outline-light">Login</a>
           <a href="{% url 'register' %}" class="btn btn-warning">Sign-up</a>
 
           {% endif %}
-
+          
 
         </div>
       </div>
     </div>
+
+    <div class="container-fluid">
+      <div class="d-flex justify-content-end ">
+          <div class="col-md-1 mt-3">
+
+            <img src="{% static 'img/1.png'%}" alt="" style="height: 20px; width: 20px;"
+            class="rounded-circle" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
+
+              <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasRight"
+                  aria-labelledby="offcanvasRightLabel">
+                  <div class="offcanvas-header">
+                      <h5 class="offcanvas-title" id="offcanvasRightLabel">My Profile</h5>
+                      <button type="button" class="bg-dark text-white border-0" data-bs-dismiss="offcanvas"
+                          aria-label="Close">
+                          <span class="fs-1">&times;</span>
+                      </button>
+                  </div>
+                  <div class="offcanvas-body">
+                      <div>
+                        <ul class="list-unstyled">
+                          <li><class="text-decoration-none text-white"><b> Name:</b> {{customer.name}}</li>
+                          <li><class="text-decoration-none text-white"><b> Address:</b> {{customer.address}}</li>
+                          <li><class="text-decoration-none text-white"><b> Phone No.:</b> {{customer.contact_no}}</li>
+                          <li><class="text-decoration-none text-white"><b> Email:</b> {{customer.email}}</li>
+                          <li><a href="#" class="text-decoration-none text-white"><b> Joined:</b> {{customer.created_at}}</a></li>
+                      </ul>
+                      </div>
+                      
+                  <div class="offcanvas-body">
+                    <p><a href="{% url 'userprofile' %}">Complete your profile</a></p>
+                  </div>
+                      <ul class="list-unstyled">
+                          <!-- <li><a href="#" class="text-decoration-none text-white"><b> Name:</b> {{user.username}}</a></li> -->
+                          <li class="mt-4"><a href="{% url 'logout' %}"
+                                  class="text-decoration-none text-white btn btn-danger"> Logout </a></li>
+                      </ul>
+                  </div>
+              </div>
+          </div>
+      </div>
+  </div>
+
+    
   </header>
   <div class="main container-fluid">
     {% block main_content %}
