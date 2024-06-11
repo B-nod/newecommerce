@@ -45,7 +45,8 @@ INSTALLED_APPS = [
     'crispy_bootstrap5',
     'users',
     'adminspage',
-    'django_filters'
+    'django_filters',
+    'blog',
 ]
 
 CRISPY_ALLOWED_TEMPLATE_PACKS = 'bootstrap5'

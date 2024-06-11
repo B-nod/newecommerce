@@ -8,6 +8,7 @@ from products.models import *
 from .filters import ProductFilter
 from django.contrib.auth.decorators import login_required
 from . forms import *
+from blog.models import *
 
 def register_user(request):
     if request.method == "POST":
@@ -58,18 +59,20 @@ def logout_user(request):
 
 def homepage(request):
     products = Product.objects.all().order_by('-id')[:8]
+    blogs = Blog.objects.all().order_by('-id')
     user = request.user.id
     if user:
         items = Cart.objects.filter(user=user)
         context = {
             'products': products,
-            'items':items
+            'items':items,
+            'blogs':blogs
         }
         return render(request, 'users/index.html', context)
     else:
         context = {
                 'products': products,
-            
+                'blogs':blogs         
         }
         return render(request, 'users/index.html', context)
     

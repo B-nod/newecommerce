@@ -1,0 +1,80 @@
+<style>
+    .card-img{
+           overflow: hidden;
+       }
+   
+       .card-img:hover img{
+           transform: scale(1.5);
+       }
+       .card-img img{
+           transition: all 2s;
+           height: 250px;
+   
+       }
+       .card-body{
+           background: linear-gradient(to top right, rgba(66, 77, 173, 0.5), rgba(170, 156, 46, 0.5));
+           text-align: center;
+           text-transform: capitalize;
+       }
+       .cardstart > h1 > span{
+           background: -webkit-linear-gradient(#7b1134,  #5b5199, #99331c);
+           -webkit-background-clip: text;
+           -webkit-text-fill-color: transparent;
+       }
+       .box{
+           background: linear-gradient(to top right, rgba(222, 58, 99, 0.5), rgba(82, 243, 176, 0.5));
+          
+       }
+       .box h2,h3,p{
+           color: #003C43 !important;
+       }
+       .bodybtn{
+           background-color: #003C43 !important;
+       }
+   </style>
+   
+   {% extends 'layout.html '%}
+   {% load static %}
+   {% block title %}
+   <title>E-commerce - Product Detail</title>
+   {% endblock %}
+   
+   {% block main_content %}
+   
+   <!-- card start -->
+   <div class="container py-3 ">
+       <h1 class="text-center mb-3"  style="color: #04211f !important; background-color: rgb(252, 209, 252);  padding: 5px 20px; border-radius: 20px;"> <span style="color: rgb(126, 39, 137); ">{{blogs.title}}</span></h1>
+       <h6 class="text-center">Added on: {{blogs.created_on}}</h6>
+    </div>
+   <div class="container">
+    <div class="row">
+        <div class="col-12">
+            <img alt="{{blogs.title}}" src="/{{blogs.image}}" style="width: 370px; height: 270px; float: right; margin: 10px;" />
+            <p style="text-align: justify;">{{blogs.body}}</p>
+        </div>
+    </div>
+</div>
+   <div class="container-fluid cardstart" style="background-color: #77B0AA!important;">
+       <h1 class="text-center pt-3"  style="color: #04211f !important;"> <span>Other</span> Blogs</h1>
+       <div class="row row-cols-1 row-cols-md-3 g-4">
+           {% for blogs in blog %}
+           <div class="col py-3">
+               <div class="card shadow-lg">
+                   <div class="card-img">
+                        <img src="/{{blogs.image}}"
+                           class="card-img-top" alt="{{blogs.title}}">
+                   </div>
+                   
+   
+                   <div class="card-body">
+                       <h4 class="card-title">{{blogs.title}}</h4>
+                       <h6 class="card-title">Rs. {{blogs.created_on}}</h6>
+                       <a href="/blogs/blogdetail/{{blogs.id}}" class="btn btn-success bodybtn">View Details</a>
+                   </div>
+               </div>
+           </div>
+           {% endfor %}
+       </div>
+   </div>
+   <!-- card end -->
+   {% endblock %}

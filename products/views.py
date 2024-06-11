@@ -39,7 +39,7 @@ def post_product(request):
         form = ProductForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            messages.add_message(request, messages.SUCCESS, "add product successfully !")
+            messages.add_message(request, messages.SUCCESS, "Product added successfully !")
             return redirect('/products/addproduct')
         else:
             messages.add_message(request, messages.ERROR, 'Please verify product field.')
