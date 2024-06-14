@@ -44,7 +44,7 @@
    <!-- card start -->
    <div class="container py-3 ">
        <h1 class="text-center mb-3"  style="color: #04211f !important; background-color: rgb(252, 209, 252);  padding: 5px 20px; border-radius: 20px;"> <span style="color: rgb(126, 39, 137); ">{{blogs.title}}</span></h1>
-       <h6 class="text-center">Added on: {{blogs.created_on}}</h6>
+       <h6 class="text-center">Added on: {{blogs.created_on|date:"F j, Y"}}</h6>
     </div>
    <div class="container">
     <div class="row">
@@ -68,7 +68,7 @@
    
                    <div class="card-body">
                        <h4 class="card-title">{{blogs.title}}</h4>
-                       <h6 class="card-title">Rs. {{blogs.created_on}}</h6>
+                       <h6 class="card-title">Rs. {{blogs.created_on|date:"F j, Y"}}</h6>
                        <a href="/blogs/blogdetail/{{blogs.id}}" class="btn btn-success bodybtn">View Details</a>
                    </div>
                </div>

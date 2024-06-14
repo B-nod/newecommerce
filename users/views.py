@@ -9,6 +9,7 @@ from .filters import ProductFilter
 from django.contrib.auth.decorators import login_required
 from . forms import *
 from blog.models import *
+from django.core.paginator import Paginator
 
 def register_user(request):
     if request.method == "POST":
@@ -77,35 +78,42 @@ def homepage(request):
         return render(request, 'users/index.html', context)
     
 def productspage(request):
-    category=Category.objects.all()
+    min_price = request.GET.get('min_price')
+    max_price = request.GET.get('max_price')
     products = Product.objects.all().order_by('-id')
+    if min_price and max_price:
+        products = Product.objects.filter(product_price__range=(min_price, max_price))
     product_filter = ProductFilter(request.GET, queryset=products)
     product_final = product_filter.qs
+    paginator = Paginator(products, 16)  # 16 products per page
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
+    page_range = range(1, paginator.num_pages + 1)
     user = request.user.id
     if user:
         if request.method == "POST":
-            searchcategory=request.POST.get('Category')
-            catsearch=Product.objects.filter(category=searchcategory)
             items = Cart.objects.filter(user=user)
             context = {
-                'products': catsearch,
-                'product_filter': product_filter,
+                'filter': product_filter,
                 'items':items,
-                'category':category
+                'page_obj': page_obj,
+                'page_range': page_range
             }
             return render(request,'users/products.html', context)
         else: 
             context = {
                 'products': product_final,
-                'product_filter': product_filter,
-                'category':category
+                'filter': product_filter,
+                'page_obj': page_obj,
+                'page_range': page_range
             }
             return render(request, 'users/products.html', context)
     else: 
         context = {
             'products': product_final,
-            'product_filter': product_filter,
-            'category':category
+            'filter': product_filter,
+            'page_obj': page_obj,
+            'page_range': page_range
         }
         return render(request, 'users/products.html', context)
 

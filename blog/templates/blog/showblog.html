@@ -35,7 +35,7 @@
                     <img src="/{{i.image}}" alt="image content" width="200px">
                 </td>
                 <td>{{i.body}}</td>
-                <td>{{i.created_on}}</td>
+                <td>{{i.created_on|date:"F j, Y"}}</td>
                 <td>
                     <a href="/blogs/updateblog/{{i.id}}" class="btn btn-primary">
                         <i class="fas fa-pen-square"></i>

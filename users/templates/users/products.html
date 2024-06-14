@@ -42,16 +42,16 @@
 <!-- card start -->
 
 <div class="container py-5">
-    <select name="Category">
-        <option disabled selected>Category</option>
-        {% for i in category %}
-        <option>{{i.category_name}}</option>
-        {% endfor %}
-    </select>
-   
+
     <form class="form d-flex align-items-center " method="get" >
-        {{product_filter.form}}
+        {{filter.form}}
         <button class="btn btn-primary ms-3" type="submit">Search</button>
+    </form>
+    
+    <form method="get">
+        <input type="number" name="min_price" id="min_price" placeholder="Min" style="width: 60px;">to
+        <input type="number" name="max_price" id="max_price" placeholder="Max" style="width: 60px;">
+        <button type="submit">Find</button>
     </form>
     {% for msg in messages %}
         {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR%}
@@ -59,10 +59,11 @@
             {{ msg }}
         </div>
         {% endif %}
-        {% endfor%}
-    <div class="row row-cols-1 row-cols-md-4 g-4">  
-
-        {% for products in products %}
+    {% endfor%}
+  
+    {% if products %}
+    <div class="row row-cols-1 row-cols-md-4 g-4">
+        {% for products in page_obj %}
         <div class="col py-3">
             <div class="card shadow-lg">
                 <div class="card-img">
@@ -80,7 +81,41 @@
         </div>
         {% endfor %}
     </div>
+    {% else %}
+    <p>No products found within the specified price range.</p>
+    {% endif %}
 </div>
+
+<!-- Pagination links -->
+<!-- <div class="pagination">
+    <span class="step-links">
+        {% if page_obj.has_previous %}
+            <a href="?page=1">&laquo; first</a>
+            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+
+        <span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span>
+
+        {% if page_obj.has_next %}
+            <a href="?page={{ page_obj.next_page_number }}">next</a>
+            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
+        {% endif %}
+    </span>
+</div> -->
+
+<div class="pagination">
+    <span class="step-links">
+        {% for i in page_range %}
+        <a href="?page={{i}}">&laquo; {{i}}</a>
+        {% endfor %}
+        <p><span class="current">
+            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+        </span></p>
+    </span>
+</div>
+
 <script>
     // setTimeout(function(){
     //     document.getElementById('search_form').submit()

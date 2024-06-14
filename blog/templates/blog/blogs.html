@@ -1,0 +1,89 @@
+<style>
+    .carousel-item img {
+        height: 600px;
+    }
+
+    /* .card img{
+        height: 250px;
+    } */
+    .card-img{
+        overflow: hidden;
+    }
+
+    .card-img:hover img{
+        transform: scale(1.5);
+    }
+    .card-img img{
+        transition: all 2s;
+        height: 250px;
+    }
+    .card-body{
+        background: linear-gradient(to top right, rgba(66, 77, 173, 0.5), rgba(170, 156, 46, 0.5));
+        text-align: center;
+        text-transform: capitalize;
+    }
+    .form label{
+        display: none;
+    }
+    .searchform label{
+        display: none;
+    }
+ 
+</style>
+
+{% extends 'layout.html '%}
+{% load static %}
+
+{% block title %}
+<title>E-commerce - Blogs</title>
+{% endblock %}
+
+{% block main_content %}
+
+<!-- card start -->
+
+<div class="container py-5">
+
+    <!-- <form method="get">
+        {{ filter.form }}
+        <button type="submit">Search</button>
+    </form> -->
+
+    <!-- <form class="form d-flex align-items-center " method="get" >
+        {{filter.form}}
+        <button class="btn btn-primary ms-3" type="submit">Search</button>
+    </form> -->
+    {% for msg in messages %}
+        {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR%}
+        <div class="alert alert-danger">
+            {{ msg }}
+        </div>
+        {% endif %}
+        {% endfor%}
+
+    <div class="row row-cols-1 row-cols-md-3 g-4">  
+        {% for i in blogs %}
+        <div class="col py-3">
+            <div class="card shadow-lg">
+                <div class="card-img">
+                     <img src="/{{i.image}}" style="width: 355px; height: 220px;"
+                     class="card-img-top" alt="{{i.title}}">
+                </div>
+                
+
+                <div class="card-body">
+                    <a href="/blogs/blogdetail/{{i.id}}" class="card-title p-3">{{i.title}}</a>
+                    <h6 class="card-title">{{i.created_on|date:"F j, Y"}}</h6>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<script>
+    // setTimeout(function(){
+    //     document.getElementById('search_form').submit()
+    // },1000)
+</script>
+<!-- card end -->
+{% endblock %}

@@ -57,6 +57,27 @@ def update_blog(request,blog_id):
     }
     return render(request,'blog/updateblog.html',context)
 
+def blogpage(request):
+    blogs = Blog.objects.all().order_by('-id')
+    user = request.user.id
+    if user:
+        if request.method == "POST":
+            context = {
+                'blogs': blogs
+            }
+            return render(request,'blog/blogs.html', context)
+        else: 
+            context = {
+                'blogs': blogs
+            }
+            return render(request, 'blog/blogs.html', context)
+    else: 
+        context = {
+            'blogs': blogs
+        }
+        return render(request, 'blog/blogs.html', context)
+
+
 def blog_detail(request, blog_id):
     blogs = Blog.objects.get(id=blog_id)
     blog = Blog.objects.all().order_by('-id')[:3]
