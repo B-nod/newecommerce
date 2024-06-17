@@ -52,13 +52,11 @@ class Order(models.Model):
     address = models.CharField(max_length=200)
     created_date = models.DateTimeField(auto_now_add=True)
 
-class Customer(models.Model):
-    name = models.CharField(max_length=100)
+class UserProfile(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    dob = models.DateField()
     address = models.CharField(max_length=100)
-    email=models.EmailField()
-    contact_no = models.CharField(validators=[MinLengthValidator(9), MaxLengthValidator(10)], max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
+    contact = models.CharField(validators=[MinLengthValidator(9), MaxLengthValidator(10)], max_length=100)
+    created_on = models.DateTimeField(auto_now_add=True,null=True)
 
-    def __str__(self):
-        return self.name
     

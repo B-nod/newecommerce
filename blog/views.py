@@ -3,6 +3,7 @@ from .forms import *
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from users.auth import admin_only
+from users.filters import BlogFilter
 
 # Create your views here.
 @login_required
@@ -59,21 +60,25 @@ def update_blog(request,blog_id):
 
 def blogpage(request):
     blogs = Blog.objects.all().order_by('-id')
+    blog_filter = BlogFilter(request.GET, queryset=blogs)
+    blog_final = blog_filter.qs
     user = request.user.id
     if user:
         if request.method == "POST":
             context = {
-                'blogs': blogs
+                'filter': blog_filter,
             }
             return render(request,'blog/blogs.html', context)
         else: 
             context = {
-                'blogs': blogs
+                'blogs': blog_final,
+                'filter': blog_filter,
             }
             return render(request, 'blog/blogs.html', context)
     else: 
         context = {
-            'blogs': blogs
+            'blogs': blog_final,
+            'filter': blog_filter,
         }
         return render(request, 'blog/blogs.html', context)
 

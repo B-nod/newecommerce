@@ -210,7 +210,7 @@ def show_cart_item(request):
                     #     'cart': cart_item
                     # }
                     # return render(request,'users/esewa_payment.html',context)
-                    return redirect(reverse('esewaform')+"?o_id="+str(order.id)+"&c_id="+str(cart_item.id))
+                    return redirect(reverse('esewaform')+"?o_id="+str(order.id)+"&c_id="+str(cart.id)) #cart_item.id instead of cart.id
                 else:
                     messages.add_message(request, messages.ERROR, 'Soemthing went wrong')
                     return render(request, 'users/orderform.html', {'form':form})
@@ -304,34 +304,34 @@ def order_item(request, product_id, cart_id):
     }
     return render(request, 'users/orderform.html', context)
 
-@login_required
-def order_all(request):
-    user=request.user
-    product=Product.objects.get()
-    cart_item = Cart.objects.get()
+# @login_required
+# def order_all(request):
+#     user=request.user
+#     product=Product.objects.get()
+#     cart_item = Cart.objects.get()
 
-    if request.method == 'POST':
-            if payment == 'Cash on delivery':
-                cart = Cart.objects.get(id=cart_id)
-                cart.delete()
-                messages.add_message(request,messages.SUCCESS, 'Order Successful')
-                return redirect('/products/my_order')
+#     if request.method == 'POST':
+#             if payment == 'Cash on delivery':
+#                 cart = Cart.objects.get(id=cart_id)
+#                 cart.delete()
+#                 messages.add_message(request,messages.SUCCESS, 'Order Successful')
+#                 return redirect('/products/my_order')
             
-            elif order.payment_method == 'Esewa':
-                # context={
-                #     'order':order,
-                #     'cart': cart_item
-                # }
-                # return render(request,'users/esewa_payment.html',context)
-                return redirect(reverse('esewaform')+"?o_id="+str(order.id)+"&c_id="+str(cart_item.id))
-            else:
-                messages.add_message(request, messages.ERROR, 'Something went wrong')
-                return render(request, 'users/orderform.html', {'form':form})
+#             elif order.payment_method == 'Esewa':
+#                 # context={
+#                 #     'order':order,
+#                 #     'cart': cart_item
+#                 # }
+#                 # return render(request,'users/esewa_payment.html',context)
+#                 return redirect(reverse('esewaform')+"?o_id="+str(order.id)+"&c_id="+str(cart_item.id))
+#             else:
+#                 messages.add_message(request, messages.ERROR, 'Something went wrong')
+#                 return render(request, 'users/orderform.html', {'form':form})
 
-    context = {
-        'form':OrderForm
-    }
-    return render(request, 'users/orderform.html', context)
+#     context = {
+#         'form':OrderForm
+#     }
+#     return render(request, 'users/orderform.html', context)
 
 
 # import requests as req

@@ -87,11 +87,11 @@
             <img src="{% static 'img/1.png'%}" alt="" style="height: 20px; width: 20px;"
             class="rounded-circle" data-bs-toggle="offcanvas" data-bs-target="#offcanvasRight" aria-controls="offcanvasRight">
 
-              <div class="offcanvas offcanvas-end bg-dark text-white" tabindex="-1" id="offcanvasRight"
+              <div class="offcanvas offcanvas-end" style="color: #080808 !important; background-color: rgb(80, 175, 175);" tabindex="-1" id="offcanvasRight"
                   aria-labelledby="offcanvasRightLabel">
                   <div class="offcanvas-header">
                       <h5 class="offcanvas-title" id="offcanvasRightLabel">My Profile</h5>
-                      <button type="button" class="bg-dark text-white border-0" data-bs-dismiss="offcanvas"
+                      <button type="button" style="color: #080808 !important; background-color: rgb(80, 175, 175); border: none;" data-bs-dismiss="offcanvas"
                           aria-label="Close">
                           <span class="fs-1">&times;</span>
                       </button>
@@ -99,16 +99,17 @@
                   <div class="offcanvas-body">
                       <div>
                         <ul class="list-unstyled">
-                          <li><class="text-decoration-none text-white"><b> Name:</b> {{customer.name}}</li>
-                          <li><class="text-decoration-none text-white"><b> Address:</b> {{customer.address}}</li>
-                          <li><class="text-decoration-none text-white"><b> Phone No.:</b> {{customer.contact_no}}</li>
-                          <li><class="text-decoration-none text-white"><b> Email:</b> {{customer.email}}</li>
-                          <li><a href="#" class="text-decoration-none text-white"><b> Joined:</b> {{customer.created_at}}</a></li>
+                          <li><class="text-decoration-none text-white"><b> Name:</b> {{ user.first_name }} {{ user.last_name }}</li>
+                          <li><class="text-decoration-none text-white"><b> Address:</b> {{ user_profile.address }}</li>
+                          <li><class="text-decoration-none text-white"><b> Date of Birth:</b> {{ user_profile.dob }}</li>
+                          <li><class="text-decoration-none text-white"><b> Phone No.:</b> {{ user_profile.contact }}</li>
+                          <li><class="text-decoration-none text-white"><b> Email:</b> {{user.email}}</li>
+                          <li><class="text-decoration-none text-white"><b> Joined:</b> {{user_profile.created_on|date:"F j, Y"}}</a></li>
                       </ul>
                       </div>
                       
                   <div class="offcanvas-body">
-                    <p><a href="{% url 'userprofile' %}">Complete your profile</a></p>
+                    <p><a href="#">Update your profile</a></p>
                   </div>
                       <ul class="list-unstyled">
                           <!-- <li><a href="#" class="text-decoration-none text-white"><b> Name:</b> {{user.username}}</a></li> -->

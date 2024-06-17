@@ -5,17 +5,24 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib import messages
 from . forms import LoginForm
 from products.models import *
+from blog.models import *
 from .filters import ProductFilter
 from django.contrib.auth.decorators import login_required
-from . forms import *
-from blog.models import *
+from .forms import *
 from django.core.paginator import Paginator
 
 def register_user(request):
     if request.method == "POST":
-        form = UserCreationForm(request.POST)
+        form = UserRegistrationForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
+            # Save additional user data to UserProfile model
+            UserProfile.objects.create(
+                user=user,
+                dob=form.cleaned_data.get('dob'),
+                contact=form.cleaned_data.get('contact'),
+                address=form.cleaned_data.get('address')
+            )
             messages.add_message(request, messages.SUCCESS, 'Account Created')
             return redirect('/register')
         else:
@@ -25,7 +32,7 @@ def register_user(request):
             })
         
     context = {
-        'form':UserCreationForm
+        'form':UserRegistrationForm()
     }
     return render(request, 'users/register.html', context)
 
@@ -136,25 +143,10 @@ def product_detail(request, product_id):
             }
         return render(request, 'users/productdetails.html', context)
             
-@login_required
+# @login_required
 def user_profile(request):
-    customer=Customer.objects.all()
-    if request.method == "POST":
-        form = CustomerForm(request.POST)
-        if form.is_valid():
-            form.save()
-            messages.add_message(request, messages.SUCCESS, "User profile created successfully!")
-            return render(request,'layout.html',{
-                'customer':customer
-            })
-        else:
-            messages.add_message(request, messages.ERROR, 'Please verify form!')
-            return render(request,'users/user_profile.html',{
-                'form':form
-            })
-    
-    context = {
-        'form':CustomerForm
-    }
-
-    return render(request, 'users/user_profile.html', context)
+    user_profile = UserProfile.objects.get(user=request.user)
+    context={
+        'user_profile': user_profile
+        }
+    return render(request, 'templates/layout.html', context)
