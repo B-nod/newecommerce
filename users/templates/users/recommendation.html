@@ -1,0 +1,19 @@
+{% extends 'layout.html '%}
+{% load static %}
+
+{% block title %}
+<title>E-commerce - Product Recommendation</title>
+{% endblock %}
+
+{% block main_content %}
+<h2>Recommended Products based on Your Preferences:</h2>
+<p>Your preferred category: {{ user_category }}</p>
+<p>Your preferred price: {{ min_price }} to {{ min_price }}</p>
+
+<ul>
+    {% for products in matched_products %}
+        <li>{{ products.product_name }} - {{ products.product_price }}</li>
+    {% endfor %}
+</ul>
+
+{% endblock %}

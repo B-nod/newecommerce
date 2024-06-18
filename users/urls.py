@@ -10,6 +10,7 @@ urlpatterns = [
     path('allproducts/', views.productspage, name='productspage'),
     path('productdetails/<int:product_id>', views.product_detail, name='productdetail'),
     path('userprofile/',views.user_profile, name='userprofile'),
+    path('recommendproduct/',views.recommend_product, name='recommendproduct'),
 
     #For password reset
     path('password_reset/',auth_views.PasswordResetView.as_view(template_name="users/password_reset_form.html"),name='password_reset'),

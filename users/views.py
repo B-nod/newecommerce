@@ -10,6 +10,7 @@ from .filters import ProductFilter
 from django.contrib.auth.decorators import login_required
 from .forms import *
 from django.core.paginator import Paginator
+from django.http import HttpResponse
 
 def register_user(request):
     if request.method == "POST":
@@ -87,9 +88,10 @@ def homepage(request):
 def productspage(request):
     min_price = request.GET.get('min_price')
     max_price = request.GET.get('max_price')
-    products = Product.objects.all().order_by('-id')
     if min_price and max_price:
         products = Product.objects.filter(product_price__range=(min_price, max_price))
+    else:
+        products = Product.objects.all().order_by('-id')
     product_filter = ProductFilter(request.GET, queryset=products)
     product_final = product_filter.qs
     paginator = Paginator(products, 16)  # 16 products per page
@@ -150,3 +152,43 @@ def user_profile(request):
         'user_profile': user_profile
         }
     return render(request, 'templates/layout.html', context)
+
+def recommend_product(request):
+    if request.method == 'POST':
+        # Get user preferences from form submission
+        user_category = request.POST.get('category')
+        min_price = request.POST.get('min_price')
+        max_price = request.POST.get('max_price')
+
+        # Query products based on user preferences
+        try:
+            category = Category.objects.get(category_name=user_category)
+        except Category.DoesNotExist:
+            return HttpResponse("Category does not exist.")
+        
+        if min_price is None or max_price is None or min_price == '' or max_price == '':
+            return HttpResponse("Please enter valid prices.")
+        
+        try:
+            min_price = float(min_price)
+            max_price = float(max_price)
+        except ValueError:
+            return HttpResponse("Invalid price format. Please enter valid numbers.")
+        
+        matched_products = Product.objects.filter(category__category_name=user_category, product_price__range=(min_price, max_price))
+
+        if matched_products.exists():
+            context = {
+                'matched_products': matched_products,
+                'user_category': user_category,
+                'min_price': min_price,
+                'max_price': max_price
+            }
+            return render(request, 'users/recommendation.html', context)
+        else:
+            message = "No matching products found for your preferences. Please try different preferences."
+            return HttpResponse(message)
+    else:
+        # Render initial form template for user input
+        return render(request, 'users/preferences_form.html')
+    
