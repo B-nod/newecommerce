@@ -1,4 +1,4 @@
-{% extends 'layout.html '%}
+{% extends 'layout.html' %}
 {% load static %}
 
 {% block title %}
@@ -7,16 +7,129 @@
 
 {% block main_content %}
 
-<form method="post" action="{% url 'recommendproduct' %}">
+<style>
+    .recommend-form {
+        background-color: #f8f9fa;
+        padding: 20px;
+        border-radius: 10px;
+        max-width: 500px;
+        margin: auto;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .recommend-form label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: bold;
+    }
+
+    .recommend-form select,
+    .recommend-form input[type="number"] {
+        width: calc(100% - 20px);
+        padding: 10px;
+        margin-bottom: 20px;
+        border: 1px solid #ced4da;
+        border-radius: 5px;
+        appearance: none;
+        -webkit-appearance: none; /* Safari and Chrome /
+        -moz-appearance: none; / Firefox */
+        background-color: #fff;
+        background-image: none;
+        position: relative;
+        z-index: 1;
+    }
+
+    .recommend-form select::after {
+        content: '';
+        display: inline-block;
+        width: 0;
+        height: 0;
+        margin-left: 5px;
+        vertical-align: middle;
+        border-top: 5px solid #000;
+        border-right: 5px solid transparent;
+        border-left: 5px solid transparent;
+        position: absolute;
+        top: 50%;
+        right: 10px;
+        transform: translateY(-50%);
+        z-index: 2;
+        pointer-events: none;
+    }
+
+    .recommend-form select::-ms-expand {
+        display: none; /* Remove default arrow in Internet Explorer */
+    }
+
+    .recommend-form select:focus {
+        outline: none;
+        border-color: #80bdff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+    }
+
+    .recommend-form input[type="number"]:focus {
+        outline: none;
+        border-color: #80bdff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.25);
+    }
+
+    .recommend-form input[type="submit"] {
+        background-color: #007bff;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+    }
+
+    .recommend-form input[type="submit"]:hover {
+        background-color: #0056b3;
+    }
+
+    .recommend-form .price-range {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    .recommend-form .price-range input[type="number"] {
+        width: 48%;
+    }
+</style>
+
+<form method="post" action="{% url 'recommendproduct' %}" class="recommend-form">
     {% csrf_token %}
-    <label for="category">What do you want to buy:</label>
-    <input type="text" id="category" name="category" required><br><br>
+    <label for="category_name">What do you want to buy:</label>
+    <select id="category_name" name="category_name">
+        <option value="" disabled selected>Select an option</option>
+        <option value="Laptop">Laptop</option>
+        <option value="Mobile">Mobile</option>
+        <option value="Charger">Charger</option>
+        <option value="Earbuds">Earbuds</option>
+        <option value="Fan">Fan</option>
+        <option value="Tablets">Tablets</option>
+    </select>
+
+    <label for="brand">Select brand:</label>
+    <select id="brand" name="brand" >
+        <option value="" disabled selected>Select a brand</option>
+        <option value="Lenovo">Lenovo</option>
+        <option value="Dell">Dell</option>
+        <option value="Apple">Apple</option>
+        <option value="Asus">Asus</option>
+        <option value="Vivo">Vivo</option>
+        <option value="Oppo">Oppo</option>
+        <option value="Samsung">Samsung</option>
+        <option value="Xiomi">Xiomi</option>
+    </select>
 
     <label for="min_price">What is your budget:</label>
-    <input type="number" id="min_price" name="min_price" required>
-
-    <label for="max_price"> to </label>
-    <input type="number" id="max_price" name="max_price" required><br><br>
+    <div class="price-range">
+        <input type="number" id="min_price" name="min_price" placeholder="Min">
+        <span>to</span>
+        <input type="number" id="max_price" name="max_price" placeholder="Max">
+    </div>
     
     <input type="submit" value="Find Recommended Products">
 </form>

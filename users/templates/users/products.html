@@ -3,78 +3,134 @@
         height: 600px;
     }
 
-    /* .card img{
-        height: 250px;
-    } */
-    .card-img{
+    .card-img {
         overflow: hidden;
     }
 
-    .card-img:hover img{
-        transform: scale(1.5);
+    .card-img:hover img {
+        transform: scale(1.1);
     }
-    .card-img img{
-        transition: all 2s;
+
+    .card-img img {
+        transition: all 0.5s;
         height: 250px;
     }
-    .card-body{
+
+    .card-body {
         background: linear-gradient(to top right, rgba(66, 77, 173, 0.5), rgba(170, 156, 46, 0.5));
         text-align: center;
         text-transform: capitalize;
+        padding: 15px;
     }
-    .form label{
+
+    .form label,
+    .searchform label {
         display: none;
     }
-    .searchform label{
-        display: none;
+
+    .search-container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
     }
- 
+
+    .search-container form {
+        display: flex;
+        align-items: center;
+    }
+
+    .search-container input[type="number"] {
+        width: 80px;
+        margin-right: 10px;
+    }
+
+    .search-container button {
+        margin-left: 10px;
+    }
+
+    .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+    }
+
+    .pagination .step-links a {
+        margin: 0 5px;
+    }
+
+    .alert {
+        margin-top: 20px;
+    }
 </style>
 
 {% extends 'layout.html '%}
 {% load static %}
 {% block title %}
-<title>E-commerce - Productspage</title>
+<title>E-commerce - Product Page</title>
 {% endblock %}
 
 {% block main_content %}
 
-<!-- card start -->
-
 <div class="container py-5">
+    <div class="search-container">
+        <a href="/recommendproduct" class="btn btn-outline-primary">Recommend Products?</a>
 
-    <form class="form d-flex align-items-center " method="get" >
-        {{filter.form}}
-        <button class="btn btn-primary ms-3" type="submit">Search</button>
-    </form>
-    
-    <form method="get">
-        <input type="number" name="min_price" id="min_price" placeholder="Min" style="width: 60px;">to
-        <input type="number" name="max_price" id="max_price" placeholder="Max" style="width: 60px;">
-        <button type="submit">Find</button>
-    </form>
+        <form class="form d-flex align-items-center" method="get">
+            {{ filter.form }}
+            <button class="btn btn-primary ms-3" type="submit">Search</button>
+        </form>
+
+                <!-- template for select on click -->
+        <!-- <form id="myForm" method="post" action="{% url 'productspage' %}">
+            {% csrf_token %}
+            <label for="category"></label>
+            <select id="category" name="category" required>
+                <option value="" disabled selected>Select an option</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Mobile">Mobile</option>
+                <option value="Charger">Charger</option>
+                <option value="Earbuds">Earbuds</option>
+                <option value="Fan">Fan</option>
+                <option value="Tablets">Tablets</option>
+            </select>
+        </form>
+
+        <script>
+        document.getElementById('category').addEventListener('change', function() {
+            document.getElementById('myForm').submit();
+        });
+        </script> -->
+
+
+        <form method="get" class="d-flex">
+            <input type="number" name="min_price" id="min_price" placeholder="Min">
+            <span class="mx-2">to</span>
+            <input type="number" name="max_price" id="max_price" placeholder="Max">
+            <button class="btn btn-primary ms-3" type="submit">Find</button>
+        </form>
+    </div>
+
     {% for msg in messages %}
-        {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR%}
+        {% if msg.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
         <div class="alert alert-danger">
             {{ msg }}
         </div>
         {% endif %}
-    {% endfor%}
-  
+    {% endfor %}
+
     {% if products %}
     <div class="row row-cols-1 row-cols-md-4 g-4">
         {% for products in page_obj %}
         <div class="col py-3">
             <div class="card shadow-lg">
                 <div class="card-img">
-                     <img src="/{{products.image}}"
-                        class="card-img-top" alt="{{products.product_name}}">
+                    <img src="/{{ products.image }}" class="card-img-top" alt="{{ products.product_name }}">
                 </div>
-                
                 <div class="card-body">
-                    <h5 class="card-title">{{products.product_name}}</h5>
-                    <h5 class="card-title">Rs. {{products.product_price}}</h5>
-                    <a href="/productdetails/{{products.id}}" class="btn btn-success">View Details</a>
+                    <h5 class="card-title">{{ products.product_name }}</h5>
+                    <h5 class="card-title">Rs. {{ products.product_price }}</h5>
+                    <a href="/productdetails/{{ products.id }}" class="btn btn-success">View Details</a>
                 </div>
             </div>
         </div>
@@ -85,40 +141,17 @@
     {% endif %}
 </div>
 
-<!-- Pagination links -->
-<!-- <div class="pagination">
-    <span class="step-links">
-        {% if page_obj.has_previous %}
-            <a href="?page=1">&laquo; first</a>
-            <a href="?page={{ page_obj.previous_page_number }}">previous</a>
-        {% endif %}
-
-        <span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span>
-
-        {% if page_obj.has_next %}
-            <a href="?page={{ page_obj.next_page_number }}">next</a>
-            <a href="?page={{ page_obj.paginator.num_pages }}">last &raquo;</a>
-        {% endif %}
-    </span>
-</div> -->
-
 <div class="pagination">
     <span class="step-links">
         {% for i in page_range %}
-        <a href="?page={{i}}">&laquo; {{i}}</a>
+        <a href="?page={{ i }}">{{ i }}</a>
         {% endfor %}
-        <p><span class="current">
-            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
-        </span></p>
+        <p>
+            <span class="current">
+                Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.
+            </span>
+        </p>
     </span>
 </div>
 
-<script>
-    // setTimeout(function(){
-    //     document.getElementById('search_form').submit()
-    // },1000)
-</script>
-<!-- card end -->
 {% endblock %}

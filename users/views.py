@@ -145,7 +145,7 @@ def product_detail(request, product_id):
             }
         return render(request, 'users/productdetails.html', context)
             
-# @login_required
+@login_required
 def user_profile(request):
     user_profile = UserProfile.objects.get(user=request.user)
     context={
@@ -156,27 +156,39 @@ def user_profile(request):
 def recommend_product(request):
     if request.method == 'POST':
         # Get user preferences from form submission
-        user_category = request.POST.get('category')
-        min_price = request.POST.get('min_price')
-        max_price = request.POST.get('max_price')
+        user_category = request.POST.get('category_name', '')
+        min_price = request.POST.get('min_price', '')
+        max_price = request.POST.get('max_price', '')
+        user_brand = request.POST.get('brand', '')
 
+        # try:
+        #     min_price = float(min_price)
+        #     max_price = float(max_price)
+        # except ValueError:
+        #     return HttpResponse("Invalid price format. Please enter valid numbers.")
+        
         # Query products based on user preferences
+        
+        # category = Category.objects.filter(category_name=user_category).first()
+        # if category is None or category == '':
+        #     # Category exists, perform the query on Product
+        #     matched_products = Product.objects.filter(product_price__range=(min_price, max_price), brand=user_brand)
+
         try:
             category = Category.objects.get(category_name=user_category)
         except Category.DoesNotExist:
-            return HttpResponse("Category does not exist.")
-        
+            #return HttpResponse("Category does not exist.")
+            matched_products = Product.objects.filter(product_price__range=(min_price, max_price), brand=user_brand)
+                  
         if min_price is None or max_price is None or min_price == '' or max_price == '':
-            return HttpResponse("Please enter valid prices.")
+            matched_products = Product.objects.filter(category__category_name=user_category, brand=user_brand)
         
-        try:
-            min_price = float(min_price)
-            max_price = float(max_price)
-        except ValueError:
-            return HttpResponse("Invalid price format. Please enter valid numbers.")
-        
-        matched_products = Product.objects.filter(category__category_name=user_category, product_price__range=(min_price, max_price))
+        elif user_brand is None or user_brand == '':
+            matched_products = Product.objects.filter(category__category_name=user_category, product_price__range=(min_price, max_price))
 
+        else:      
+            matched_products = Product.objects.filter(category__category_name=user_category, product_price__range=(min_price, max_price), brand=user_brand)
+        
         if matched_products.exists():
             context = {
                 'matched_products': matched_products,
