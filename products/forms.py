@@ -1,6 +1,7 @@
 from django.forms import ModelForm
 from . models import *
 
+
 class ProductForm(ModelForm):
     class Meta:
         model = Product
@@ -20,3 +21,4 @@ class EditOrderForm(ModelForm):
     class Meta:
         model = Order
         fields = ['status', 'payment_status']
+

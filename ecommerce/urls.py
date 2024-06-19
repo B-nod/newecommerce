@@ -28,4 +28,5 @@ urlpatterns = [
     path('', include('users.urls')),
     path('admins/', include('adminspage.urls')),
     path('blogs/', include('blog.urls')),
+    path('services/', include('services.urls')),
 ]
