@@ -1,0 +1,34 @@
+{% extends 'admins/layout.html' %}
+{% block main_content %}
+
+
+<h2 class="text-center text-success">All Service Forms</h2>
+
+<div class="container">
+    <div class="d-flex justify-content-center">
+        <div class="col-md-10">
+            <table class="table table-bordered table-striped table-light">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Message</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in contacts%}
+                    <tr>
+                        <td>
+                            {{ i.name }}</td>
+                        <td>{{ i.email }}</td>
+                        <td>{{ i.message }}</td>
+                    </tr>
+                    
+                    {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
