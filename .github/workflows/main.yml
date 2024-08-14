@@ -4,7 +4,7 @@ on: [push, pull_request]
 
 jobs:
   test:
-    runs-on: windows-latest
+    runs-on: ubuntu-latest  # Switch to Ubuntu (Linux) runner
 
     services:
       mysql:
@@ -59,4 +59,5 @@ jobs:
       - name: Run tests
         run: |
           python manage.py test
+
 
