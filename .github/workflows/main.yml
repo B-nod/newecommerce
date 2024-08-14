@@ -10,10 +10,10 @@ jobs:
       mysql:
         image: mysql:8.0
         env:
-          MYSQL_ROOT_PASSWORD: root_password
-          MYSQL_DATABASE: 
-          MYSQL_USER: myuser
-          MYSQL_PASSWORD: mypassword
+          MYSQL_ROOT_PASSWORD: 
+          MYSQL_DATABASE: djangoecommerce
+          MYSQL_USER: root
+          MYSQL_PASSWORD: 
         ports:
           - 3306:3306
         options: >-
